@@ -22,10 +22,11 @@ public class BoardManager : MonoBehaviour {
 	public List<GameObject> chessmanPrefabs;
 	private List<GameObject> activeChessman;
 
-	public bool isWhiteTurn;
+	public bool isWhiteTurn = true;
 
 	private void Start(){
 		isWhiteTurn = true;
+		Instance = this;
 		SpawnAllChessmans ();
 	}
 
@@ -55,8 +56,9 @@ public class BoardManager : MonoBehaviour {
 		if (Chessmans [x, y].isWhite != isWhiteTurn)
 			return;
 
-		allowedMoves = Chessmans [x, y].PossibleMove (); 
+		allowedMoves = Chessmans [x, y].PossibleMove ();
 		selectedChessman = Chessmans [x, y];
+		Debug.Log (allowedMoves);
 		BoardHighlights.Instance.HighlightAllowedMoves (allowedMoves);
 	}
 
@@ -64,11 +66,28 @@ public class BoardManager : MonoBehaviour {
 	// method for moving the chess piece on another cell
 	private void MoveChessman(int x, int y){
 		if (allowedMoves[x, y]) {
+			Chessman c = Chessmans [x, y];
+
+			if (c != null && c.isWhite != isWhiteTurn) {
+				// capture the piece
+
+				// if it is a king
+				if (c.GetType () == typeof(King)) {
+					// end the game and return
+					return;
+				}
+
+				activeChessman.Remove (c.gameObject);
+				Destroy (c.gameObject);
+			}
+
 			Chessmans [selectedChessman.CurrentX, selectedChessman.CurrentY] = null;
 			selectedChessman.transform.position = GetTileCenter (x, y);
+			selectedChessman.SetPosition (x, y);
 			Chessmans [x, y] = selectedChessman;
 			isWhiteTurn = !isWhiteTurn;
 		}
+		BoardHighlights.Instance.hideHighlights ();
 		selectedChessman = null;
 	}
 
