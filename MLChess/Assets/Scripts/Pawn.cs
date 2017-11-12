@@ -7,8 +7,6 @@ public class Pawn : Chessman {
 		bool[,] r = new bool[8, 8];
 		Chessman c, c2;
 
-//		r [3, 3] = true;
-
 		// White team move
 		if (isWhite) {
 			// Diagonal left
@@ -74,7 +72,6 @@ public class Pawn : Chessman {
 					r [CurrentX, CurrentY - 2] = true;
 			}
 		}
-
 		return r;
 	}
 }

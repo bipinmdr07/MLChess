@@ -58,7 +58,6 @@ public class BoardManager : MonoBehaviour {
 
 		allowedMoves = Chessmans [x, y].PossibleMove ();
 		selectedChessman = Chessmans [x, y];
-		Debug.Log (allowedMoves);
 		BoardHighlights.Instance.HighlightAllowedMoves (allowedMoves);
 	}
 
