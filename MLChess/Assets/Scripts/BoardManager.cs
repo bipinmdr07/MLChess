@@ -105,6 +105,20 @@ public class BoardManager : MonoBehaviour {
 			EnPassantMove [0] = -1;
 			EnPassantMove [1] = -1;
 			if (selectedChessman.GetType () == typeof(Pawn)) {
+				// time for promotion
+				// white
+				if (y == 7) {
+					activeChessman.Remove (selectedChessman.gameObject);
+					Destroy (selectedChessman.gameObject);
+					SpawnChessman (1, x, y, -90);
+					selectedChessman = Chessmans [x, y];
+				} else if (y == 0) {
+					activeChessman.Remove (selectedChessman.gameObject);
+					Destroy (selectedChessman.gameObject);
+					SpawnChessman(7, x, y, -90);
+					selectedChessman = Chessmans [x, y];
+				}
+
 				if (selectedChessman.CurrentY == 1 && y == 3) {
 					EnPassantMove [0] = x;
 					EnPassantMove [1] = y - 1;
