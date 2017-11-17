@@ -85,4 +85,73 @@ public class Rook : Chessman {
 		}
 		return r;
 	}
+
+	public override bool Threatened(){
+		Chessman c;
+		int i;
+		// Right
+		i = CurrentX;
+		while (true) {
+			i++;
+			if (i >= 8) {
+				break;
+			}
+
+			c = BoardManager.Instance.Chessmans [i, CurrentY];
+			if (c != null && c.isWhite != isWhite) {
+				if (c.GetType() == typeof(King))
+					return true;
+				break;
+			}
+		}
+
+		// Left
+		i = CurrentX;
+		while (true) {
+			i--;
+			if (i < 0) {
+				break;
+			}
+
+			c = BoardManager.Instance.Chessmans [i, CurrentY];
+			if (c != null && c.isWhite != isWhite) {
+				if (c.GetType() == typeof(King))
+					return true;
+				break;
+			}
+		}
+
+		// Up
+		i = CurrentY;
+		while (true) {
+			i++;
+			if (i >= 8) {
+				break;
+			}
+
+			c = BoardManager.Instance.Chessmans [CurrentX, i];
+			if (c != null && c.isWhite != isWhite) {
+				if (c.GetType() == typeof(King))
+					return true;
+				break;
+			}
+		}
+
+		// Left
+		i = CurrentY;
+		while (true) {
+			i--;
+			if (i < 0) {
+				break;
+			}
+
+			c = BoardManager.Instance.Chessmans [CurrentX, i];
+			if (c != null && c.isWhite != isWhite) {
+				if (c.GetType () == typeof(King))
+					return true;
+				break;
+			}
+		}
+		return false;
+	}
 }

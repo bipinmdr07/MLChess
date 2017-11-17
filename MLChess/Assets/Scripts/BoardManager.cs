@@ -135,6 +135,10 @@ public class BoardManager : MonoBehaviour {
 			Chessmans [x, y] = selectedChessman;
 			isWhiteTurn = !isWhiteTurn;
 		}
+		// Check status
+		if (selectedChessman.Threatened()){
+			Debug.Log ("Check");
+		}
 		BoardHighlights.Instance.hideHighlights ();
 		selectedChessman = null;
 	}

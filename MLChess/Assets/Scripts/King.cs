@@ -70,4 +70,8 @@ public class King : Chessman {
 
 		return r;
 	}
+
+	public override bool Threatened(){
+		return false;
+	}
 }

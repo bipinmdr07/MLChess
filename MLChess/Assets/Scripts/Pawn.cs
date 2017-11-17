@@ -89,4 +89,45 @@ public class Pawn : Chessman {
 		}
 		return r;
 	}
+
+	public override bool Threatened(){
+		Chessman c;
+
+		// White team move
+		if (isWhite) {
+			// Diagonal left
+			if (CurrentX != 0 && CurrentY != 7) {
+				c = BoardManager.Instance.Chessmans [CurrentX - 1, CurrentY + 1];
+				if (c != null && !c.isWhite && c.GetType() == typeof(King)) {
+					return true;
+				}
+			}
+
+			// Diagonal Right
+			if (CurrentX != 7 && CurrentY != 7) {
+				c = BoardManager.Instance.Chessmans [CurrentX + 1, CurrentY + 1];
+				if (c != null && !c.isWhite && c.GetType() == typeof(King)) {
+					return true;
+				}
+			}
+
+		} else {
+			// Diagonal left
+			if (CurrentX != 0 && CurrentY != 0) {
+				c = BoardManager.Instance.Chessmans [CurrentX - 1, CurrentY - 1];
+				if (c != null && c.isWhite && c.GetType() == typeof(King)) {
+					return true;
+				}
+			}
+
+			// Diagonal Right
+			if (CurrentX != 7 && CurrentY != 0) {
+				c = BoardManager.Instance.Chessmans [CurrentX + 1, CurrentY - 1];
+				if (c != null && c.isWhite && c.GetType() == typeof(King)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 }

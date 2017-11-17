@@ -177,4 +177,152 @@ public class Queen : Chessman {
 
 		return r;
 	}
+
+	public override bool Threatened(){
+		Chessman c;
+		int i, j;
+
+		// Right
+		i = CurrentX;
+		while (true) {
+			i++;
+			if (i >= 8) {
+				break;
+			}
+
+			c = BoardManager.Instance.Chessmans [i, CurrentY];
+			if (c != null && c.isWhite != isWhite) {
+				if (c.GetType () == typeof(King))
+					return true;
+				break;
+			}
+		}
+
+		// Left
+		i = CurrentX;
+		while (true) {
+			i--;
+			if (i < 0) {
+				break;
+			}
+
+			c = BoardManager.Instance.Chessmans [i, CurrentY];
+			if (c != null && c.isWhite != isWhite) {
+				if (c.GetType () == typeof(King))
+					return true;
+				break;
+			}
+		}
+
+		// Up
+		i = CurrentY;
+		while (true) {
+			i++;
+			if (i >= 8) {
+				break;
+			}
+
+			c = BoardManager.Instance.Chessmans [CurrentX, i];
+			if (c != null && c.isWhite != isWhite) {
+				if (c.GetType () == typeof(King))
+					return true;
+				break;
+			}
+		}
+
+		// Left
+		i = CurrentY;
+		while (true) {
+			i--;
+			if (i < 0) {
+				break;
+			}
+
+			c = BoardManager.Instance.Chessmans [CurrentX, i];
+			if (c != null && c.isWhite != isWhite) {
+				if (c.GetType () == typeof(King))
+					return true;
+				break;
+			}
+		}
+
+
+		// bishop property
+		// Top left
+		i = CurrentX;
+		j = CurrentY;
+
+		while (true) {
+			i--;
+			j++;
+			if (i < 0 || j >= 8) {
+				break;
+			}
+
+			c = BoardManager.Instance.Chessmans [i, j];
+			if (c != null && c.isWhite != isWhite) {
+				if (c.GetType () == typeof(King))
+					return true;
+				break;
+			}
+		}
+
+		// Top Right
+		i = CurrentX;
+		j = CurrentY;
+
+		while (true) {
+			i++;
+			j++;
+			if (i >= 8 || j >= 8) {
+				break;
+			}
+
+			c = BoardManager.Instance.Chessmans [i, j];
+			if (c != null && c.isWhite != isWhite) {
+				if (c.GetType () == typeof(King))
+					return true;
+				break;
+			}
+		}
+
+		// Down left
+		i = CurrentX;
+		j = CurrentY;
+
+		while (true) {
+			i--;
+			j--;
+			if (i < 0 || j < 0) {
+				break;
+			}
+
+			c = BoardManager.Instance.Chessmans [i, j];
+			if (c != null && c.isWhite != isWhite) {
+				if (c.GetType () == typeof(King))
+					return true;
+				break;
+			}
+		}
+
+		// Down Right
+		i = CurrentX;
+		j = CurrentY;
+
+		while (true) {
+			i++;
+			j--;
+			if (i >= 8 || j < 0) {
+				break;
+			}
+
+			c = BoardManager.Instance.Chessmans [i, j];
+			if (c != null && c.isWhite != isWhite) {
+				if (c.GetType () == typeof(King))
+					return true;
+				break;
+			}
+		}
+		return false;
+	}
 }
