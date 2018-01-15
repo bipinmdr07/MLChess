@@ -68,6 +68,68 @@ public class King : Chessman {
 			}
 		}
 
+		// casteling for white piece
+		if (isWhite) {
+			// left
+			i = CurrentX;
+			while (i > 0 && CurrentY == 0) {
+				i--;
+				c = BoardManager.Instance.Chessmans [i, CurrentY];
+				if (i == 0) {
+					if (c != null && c.GetType () == typeof(Rook) && c.isWhite == true)
+						r [i, CurrentY] = true;
+				} else {
+					if (c != null)
+						break;
+				}
+			}
+
+			// right
+			while (i < 7 && CurrentY == 0) {
+				i++;
+				c = BoardManager.Instance.Chessmans [i, CurrentY];
+				if (i == 7) {
+					if (c != null && c.GetType () == typeof(Rook) && c.isWhite == true) {
+						r [i, CurrentY] = true;
+					} else {
+						if (c != null) {
+							break;
+						}
+					}
+				}
+			}
+
+		} else {
+			// left
+			i = CurrentX;
+			while (i > 0 && CurrentY == 7) {
+				i--;
+				c = BoardManager.Instance.Chessmans [i, CurrentY];
+				if (i == 0) {
+					if (c != null && c.GetType () == typeof(Rook) && c.isWhite == false)
+						r [i, CurrentY] = true;
+				} else {
+					if (c != null)
+						break;
+				}
+			}
+
+			// right
+			while (i < 7 && CurrentY == 7) {
+				i++;
+				c = BoardManager.Instance.Chessmans [i, CurrentY];
+				if (i == 7) {
+					if (c != null && c.GetType () == typeof(Rook) && c.isWhite == false) {
+						r [i, CurrentY] = true;
+					} else {
+						if (c != null) {
+							break;
+						}
+					}
+				}
+			}
+		}
+
 		return r;
 	}
 

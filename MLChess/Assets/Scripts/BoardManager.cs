@@ -78,6 +78,83 @@ public class BoardManager : MonoBehaviour {
 		if (allowedMoves[x, y]) {
 			Chessman c = Chessmans [x, y];
 
+			// only case of casteling
+			if (c != null && c.isWhite == isWhiteTurn && selectedChessman.GetType() == typeof(King) && c.GetType() == typeof(Rook)){
+
+				// lets move the rook and the king in the respective position after casteling
+				int currentKingPos = selectedChessman.CurrentX;
+				int rookPos = c.CurrentX;
+
+				int _x = -1;
+				int _y = -1;
+
+				// castling to left side of the board
+				if (currentKingPos > rookPos) {
+					// king pose - 2;
+					// rook pose + 2
+					_x = currentKingPos - 2;
+
+
+					if (isWhiteTurn) {
+						_y = 0;
+						activeChessman.Remove (selectedChessman.gameObject);
+						Destroy (selectedChessman.gameObject);
+						SpawnChessman (0, _x, _y, -90);
+
+
+						activeChessman.Remove (c.gameObject);
+						Destroy (c.gameObject);
+						SpawnChessman (2, rookPos + 3, _y, -90);
+					} else {
+						_y = 7;
+						activeChessman.Remove (selectedChessman.gameObject);
+						Destroy (selectedChessman.gameObject);
+						SpawnChessman (6, _x, _y, -90);
+
+
+						activeChessman.Remove (c.gameObject);
+						Destroy (c.gameObject);
+						SpawnChessman (8, rookPos + 3, _y, -90);
+					}
+				} else if (currentKingPos < rookPos) {
+					// king pose - 2;
+					// rook pose + 2
+					_x = currentKingPos + 2;
+
+
+					if (isWhiteTurn) {
+						_y = 0;
+						activeChessman.Remove (selectedChessman.gameObject);
+						Destroy (selectedChessman.gameObject);
+						SpawnChessman (0, _x, _y, -90);
+
+
+						activeChessman.Remove (c.gameObject);
+						Destroy (c.gameObject);
+						SpawnChessman (2, rookPos - 2, _y, -90);
+					} else {
+						_y = 7;
+						activeChessman.Remove (selectedChessman.gameObject);
+						Destroy (selectedChessman.gameObject);
+						SpawnChessman (6, _x, _y, -90);
+
+
+						activeChessman.Remove (c.gameObject);
+						Destroy (c.gameObject);
+						SpawnChessman (8, rookPos - 2, _y, -90);
+					}
+				}
+
+
+				Chessmans [selectedChessman.CurrentX, selectedChessman.CurrentY] = null;
+				selectedChessman.transform.position = GetTileCenter (_x, _y);
+				selectedChessman.SetPosition (_x, _y);
+				Chessmans [_x, _y] = selectedChessman;
+				isWhiteTurn = !isWhiteTurn;
+//
+				return;
+			}
+
 			if (c != null && c.isWhite != isWhiteTurn) {
 				// capture the piece
 
