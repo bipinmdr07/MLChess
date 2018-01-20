@@ -12,7 +12,8 @@ public class King : Chessman {
 		int i, j;
 
 		// king is moved
-		if (CurrentX != 4) {
+		if (CurrentX != 4 || CurrentY != 0) {
+			Debug.Log (moved);
 			moved = true;
 		}
 
