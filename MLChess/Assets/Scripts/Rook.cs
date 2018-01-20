@@ -3,10 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Rook : Chessman {
+	private int prev_pos = -1;
+	public bool moved = false;
 	public override bool[,] PossibleMove(){
 		bool[,] r = new bool[8, 8];
 		Chessman c;
 		int i;
+
+		// Rook is moved
+		if (prev_pos >= 0) {
+			if (CurrentX != prev_pos) {
+				moved = true;
+			}
+		} else {
+			prev_pos = CurrentX;
+		}
 
 		// Right
 		i = CurrentX;
@@ -153,5 +164,9 @@ public class Rook : Chessman {
 			}
 		}
 		return false;
+	}
+
+	protected bool IsRookMoved(){
+		return moved;
 	}
 }

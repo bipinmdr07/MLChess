@@ -78,6 +78,59 @@ public class BoardManager : MonoBehaviour {
 		if (allowedMoves[x, y]) {
 			Chessman c = Chessmans [x, y];
 
+
+
+			if (c != null && c.isWhite != isWhiteTurn) {
+				// capture the piece
+
+				// if it is a king
+				if (c.GetType () == typeof(King)) {
+					EndGame ();
+					return;
+				}
+
+				activeChessman.Remove (c.gameObject);
+				Destroy (c.gameObject);
+			}
+
+			if (x == EnPassantMove [0] && y == EnPassantMove [1]) {
+				// white turn
+				if (isWhiteTurn) {
+					c = Chessmans [x, y - 1];
+				} else {
+					c = Chessmans [x, y + 1];
+				}
+				activeChessman.Remove (c.gameObject);
+				Destroy (c.gameObject);
+			}
+
+			EnPassantMove [0] = -1;
+			EnPassantMove [1] = -1;
+			if (selectedChessman.GetType () == typeof(Pawn)) {
+				// time for promotion
+				// white
+				if (y == 7) {
+					activeChessman.Remove (selectedChessman.gameObject);
+					Destroy (selectedChessman.gameObject);
+					SpawnChessman (1, x, y, -90);
+					selectedChessman = Chessmans [x, y];
+				} else if (y == 0) {
+					activeChessman.Remove (selectedChessman.gameObject);
+					Destroy (selectedChessman.gameObject);
+					SpawnChessman(7, x, y, -90);
+					selectedChessman = Chessmans [x, y];
+				}
+
+				if (selectedChessman.CurrentY == 1 && y == 3) {
+					EnPassantMove [0] = x;
+					EnPassantMove [1] = y - 1;
+				}
+				else if (selectedChessman.CurrentY == 6 && y == 4) {
+					EnPassantMove [0] = x;
+					EnPassantMove [1] = y + 1;
+				}
+			}
+
 			// only case of casteling
 			if (c != null && c.isWhite == isWhiteTurn && selectedChessman.GetType() == typeof(King) && c.GetType() == typeof(Rook)){
 
@@ -143,66 +196,6 @@ public class BoardManager : MonoBehaviour {
 						Destroy (c.gameObject);
 						SpawnChessman (8, rookPos - 2, _y, -90);
 					}
-				}
-
-
-				Chessmans [selectedChessman.CurrentX, selectedChessman.CurrentY] = null;
-				selectedChessman.transform.position = GetTileCenter (_x, _y);
-				selectedChessman.SetPosition (_x, _y);
-				Chessmans [_x, _y] = selectedChessman;
-				isWhiteTurn = !isWhiteTurn;
-//
-				return;
-			}
-
-			if (c != null && c.isWhite != isWhiteTurn) {
-				// capture the piece
-
-				// if it is a king
-				if (c.GetType () == typeof(King)) {
-					EndGame ();
-					return;
-				}
-
-				activeChessman.Remove (c.gameObject);
-				Destroy (c.gameObject);
-			}
-
-			if (x == EnPassantMove [0] && y == EnPassantMove [1]) {
-				// white turn
-				if (isWhiteTurn) {
-					c = Chessmans [x, y - 1];
-				} else {
-					c = Chessmans [x, y + 1];
-				}
-				activeChessman.Remove (c.gameObject);
-				Destroy (c.gameObject);
-			}
-
-			EnPassantMove [0] = -1;
-			EnPassantMove [1] = -1;
-			if (selectedChessman.GetType () == typeof(Pawn)) {
-				// time for promotion
-				// white
-				if (y == 7) {
-					activeChessman.Remove (selectedChessman.gameObject);
-					Destroy (selectedChessman.gameObject);
-					SpawnChessman (1, x, y, -90);
-					selectedChessman = Chessmans [x, y];
-				} else if (y == 0) {
-					activeChessman.Remove (selectedChessman.gameObject);
-					Destroy (selectedChessman.gameObject);
-					SpawnChessman(7, x, y, -90);
-					selectedChessman = Chessmans [x, y];
-				}
-
-				if (selectedChessman.CurrentY == 1 && y == 3) {
-					EnPassantMove [0] = x;
-					EnPassantMove [1] = y - 1;
-				}
-				else if (selectedChessman.CurrentY == 6 && y == 4) {
-					EnPassantMove [0] = x;
-					EnPassantMove [1] = y + 1;
 				}
 			}
 
@@ -329,6 +322,7 @@ public class BoardManager : MonoBehaviour {
 		for (int i = 0; i < 8; i++) {
 			SpawnChessman(11, i, 6, -90);
 		}
+			
 	}
 
 	private void EndGame(){
